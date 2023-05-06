@@ -10,7 +10,8 @@ module.exports.login = async (req, res, next) => {
    try {
       const results = await connection.query('SELECT Tennv, pass, quyen FROM Nhanvien where Tennv = "' + req.body.username + '";');    
       if (results[0].pass === req.body.password) {
-         res.json({ success: true, data: {Tennv: results[0].Tennv, quyen: results[0].quyen} })
+         const shop = await connection.query('select shop from tshop;');
+         res.json({ success: true, data: {Tennv: results[0].Tennv, quyen: results[0].quyen, shop: shop[0].shop} })
       } else {
          res.status(403).json({ success: false, data: "Invalid username / password" })
       }
